@@ -1,0 +1,54 @@
+------------------FUNC1------------------
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-a '2024-08-15T17:00:00' 20 10 'Equipo A'"         //matchId = 1 creado
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-a '2024-09-15T12:00:00' 15 250 'Equipo B'"    //matchId = 2 creado
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-a '2024-10-15T19:00:00' 10 200 'Equipo C'"   //matchId = 3 creado
+
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-a '2024-10-15T19:00:00' 10 200 '  '"           //Falla (visitante inválido)
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-a '2023-07-15T19:00:00' 10 200 'Equipo D'" //Falla (fecha inválida)
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-a '2024-11-15T11:00:00' -1 200 'Equipo D'" //Falla (precio inválido)
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-a '2024-11-15T11:00:00' 10 -1 'Equipo D'" //Falla (número entradas inválido)
+
+------------------SENTENCIA SQL------------------
+UPDATE `match` SET matchdate = '2023-09-15 12:00:00' WHERE idmatch = 2;     // Sentencia SQL para cambiar la fecha del partido con matchID = 1
+------------------SENTENCIA SQL------------------
+
+------------------FUNC4------------------
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-b user1@udc.es 1111222233334444 5 1      // purchaseId = 1 creada
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-b user2@udc.es 2222333344445555 4 1      // purchaseID = 2 creada
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-b user1@udc.es 1111222233334444 8 3     // purchaseId = 3 creada
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-b user3@udc.es 3333444455556666 7 3  // purchaseID = 4 creada
+
+
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-b user3@udc.es 3333444455556666 2 1  // Falla (no quedan entradas suficientes)
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-b user3@udc.es 3333444455556666 1 2  // Falla (partido ya celebrado)
+
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-b ' ' 6666777788889999 4 3  // Falla (email inválido)
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-b user6@udc.es 66667777 4 3                  // Falla (tarjeta inválida)
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-b user6@udc.es 6666777788889999 0 3     // Falla (número de entradas inválido)
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-b user6@udc.es 6666777788889999 4 9     // Falla (partido no existe)
+
+------------------FUNC6------------------
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-c 1 1111222233334444  // Entradas recogidas
+
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-c 1 1111222233334444     // Falla (entradas ya recogidas)
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-c 2 1111222233334444      // Falla (tarjeta incorrecta)
+
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-c 9 1111222233334444   // Falla (compra no existe)
+
+------------------FUNC3------------------
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-fd 2024-09-01 // Devuelve partido con id 1
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-fd 2024-11-01 // Devuelve partidos con id 1 y 3
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-fd 2024-08-01 // Devuelve lista vacía
+
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-fd 2023-08-01 // Falla (fecha pasada) o devuelve lista vacía
+
+------------------FUNC2------------------
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-f 2
+
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-f 9  // Falla (partido no existe)
+
+------------------FUNC5------------------
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-fp user1@udc.es   // Devuelve compras con id 1 y 3
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-fp user2@udc.es  // Devuelve compra con id 2
+
+mvn exec:java -Dexec.mainClass=es.udc.ws.app.client.ui.AppServiceClient "-Dexec.args=-fp user6@udc.es   // Devulve lista vacía
